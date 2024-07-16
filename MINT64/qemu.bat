@@ -1,0 +1,1 @@
+qemu-system-x86_64.exe -m 64 -fda c:/Users/SonByeongguk/WT/DTOS/MINT64/Disk.img -rtc base=localtime -M pc

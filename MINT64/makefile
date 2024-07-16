@@ -1,0 +1,28 @@
+all: BootLoader Disk.img
+
+
+BootLoader:
+	@echo ""
+	@echo =================== Build Boot Loader ==========
+	@echo ""
+
+	make -C 00.BootLoader
+
+	@echo ""
+	@echo =================== Build Complete =============
+	@echo ""
+
+Disk.img: 00.BootLoader/BootLoader.bin
+	@echo ""
+	@echo =================== Disk image Build Start =====
+	@echo ""
+	
+	copy .\00.BootLoader\BootLoader.bin .\Disk.img
+
+	@echo ""
+	@echo =================== All Build Complete =========
+	@echo ""
+
+clean:
+	make -C 00.BootLoader clean
+	del Disk.img -Force
