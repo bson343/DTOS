@@ -7,17 +7,18 @@ BootLoader:
 	@echo ""
 
 	make -C 00.BootLoader
+	make -C 01.Kernel32
 
 	@echo ""
 	@echo =================== Build Complete =============
 	@echo ""
 
-Disk.img: 00.BootLoader/BootLoader.bin
+Disk.img: 00.BootLoader/BootLoader.bin 01.Kernel32/Kernel32.bin
 	@echo ""
 	@echo =================== Disk image Build Start =====
 	@echo ""
 	
-	copy .\00.BootLoader\BootLoader.bin .\Disk.img
+	powershell -ExecutionPolicy Bypass -File merge.ps1
 
 	@echo ""
 	@echo =================== All Build Complete =========
@@ -25,4 +26,5 @@ Disk.img: 00.BootLoader/BootLoader.bin
 
 clean:
 	make -C 00.BootLoader clean
+	make -C 01.Kernel32 clean
 	del Disk.img -Force
