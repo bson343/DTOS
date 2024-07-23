@@ -18,7 +18,7 @@ Disk.img: 00.BootLoader/BootLoader.bin 01.Kernel32/Kernel32.bin
 	@echo =================== Disk image Build Start =====
 	@echo ""
 	
-	powershell -ExecutionPolicy Bypass -File merge.ps1
+	powershell -ExecutionPolicy Bypass -File merge2.ps1 $^
 
 	@echo ""
 	@echo =================== All Build Complete =========
