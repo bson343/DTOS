@@ -27,13 +27,13 @@ START:
 ; 예제 코드
     ; 커널 코드 세그먼트를 0x00을 기준으로 하는 것으로 교체하고 EIP의 값을 0x00을 기준으로 재설정
     ; jmp dword(16bit 세트먼트 레지스터) CS 세그먼트 셀렉터 : EIP
-    ; jmp dword 0x08: ( PROTECTEDMODE - $$ + 0x10000 )
+    jmp dword 0x08: ( PROTECTEDMODE - $$ + 0x10000 )
                                     ; 왜 오프셋 영역에 실행 주소를 보정해야 하는지 모르겠다
                                     ; 리얼모드처럼 보호모드도 세그먼트:오프셋 모델로 주소를 지정하므로 세그먼트 영역에 0x10000을 지정하면 되는거 아닌가?
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; 한 번 시도해본 코드
-    jmp dword 0x08: PROTECTEDMODE
+    ;jmp dword 0x08: PROTECTEDMODE
                                     ; GDT에서 코드 세그먼트 기본주소를 0x00(32bit)에서 0x10000(32bit) 수정 함
                                     ; GDT에서 시작 주소를 설정하였으므로 오프셋은 가독성 좋게 레이블만 사용
                                     ; 시도 결과 잘 실행됨!!
@@ -68,7 +68,7 @@ PROTECTEDMODE:
     call PRINTMESSAGE
     add esp, 12                     ; 삽입한 파라미터 제거
     
-    jmp $                           ; 현재 위치에서 무한 루프 수행
+    jmp dword 0x08: 0x10200           ; 현재 위치에서 무한 루프 수행
 
 
 ; 함수 코드 영역
@@ -152,7 +152,7 @@ GDT:
     CODEDESCRIPTOR:
         dw 0xFFFF                           ; Limit [15:00]
         dw 0x0000                           ; Base [15:00]
-        db 0x01                             ; Base [23:16] @@ 예제와 다르게 작성함 예제는 0x00
+        db 0x00                             ; Base [23:16] @@ 예제와 다르게 작성함 예제는 0x00
         db 0x9A                             ; P=1, DPL=0, Code Segment, Execute/Read
         db 0xCF                             ; G=1, D=1, Limit[19:16]
         db 0x00                             ; Base [31:24]
