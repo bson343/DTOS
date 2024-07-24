@@ -1,8 +1,12 @@
 param(
+    [Parameter(Mandatory=$true, Position=0)]
+    [string]$DestinationFileName,
+
     [Parameter(Mandatory=$true, ValueFromRemainingArguments=$true)]
     [string[]]$InputArray=@()
 )
 
+Write-Host "Check Destination File Name: $DestinationFileName"
 Write-Host "Check Input String"
 
 foreach($element in $InputArray)
@@ -13,7 +17,7 @@ foreach($element in $InputArray)
 $length = $InputArray.Count
 Write-Host "InputCount: $length"
 
-$DestinationFile = "Disk.img";
+$DestinationFile = $DestinationFileName;
 
 # 입력 파일들이 존재하는지 확인
 foreach ($file in $InputArray) {
