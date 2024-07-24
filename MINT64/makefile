@@ -1,30 +1,58 @@
-all: BootLoader Disk.img
+all: BootLoader Kernel32 Utility Disk.img
 
 
 BootLoader:
-	@echo ""
+	@echo.
 	@echo =================== Build Boot Loader ==========
-	@echo ""
+	@echo.
 
 	make -C 00.BootLoader
+
+	@echo.
+	@echo =================== Build Complete =============
+	@echo.
+
+# 보호 모드 커널 이미지를 빌드하기 위해 보호 모드 디렉터리에서 make 실행
+Kernel32:
+	@echo.
+	@echo ============== Build 32bit Kernel ===============
+	@echo.
+	
 	make -C 01.Kernel32
 
-	@echo ""
-	@echo =================== Build Complete =============
-	@echo ""
+	@echo.
+	@echo =============== Build Complete ===============
+	@echo.
 
 Disk.img: 00.BootLoader/BootLoader.bin 01.Kernel32/Kernel32.bin
-	@echo ""
+	@echo.
 	@echo =================== Disk image Build Start =====
-	@echo ""
+	@echo.
 	
-	powershell -ExecutionPolicy Bypass -File merge2.ps1 $@ $^
+#	powershell -ExecutionPolicy Bypass -File merge2.ps1 $@ $^
+	ImageMaker.exe $^
 
-	@echo ""
+	@echo.
 	@echo =================== All Build Complete =========
-	@echo ""
+	@echo.
+
+# 유틸리티 빌드
+Utility:
+	@echo.
+	@echo =========== Utility Build Start ===========
+	@echo.
+
+	make -C 04.Utility
+
+	@echo.
+	@echo =========== Utility Build Complete ===========
+	@echo.
 
 clean:
 	make -C 00.BootLoader clean
 	make -C 01.Kernel32 clean
+	make -C 04.Utility clean
 	del Disk.img -Force
+
+re: clean all
+
