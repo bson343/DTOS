@@ -152,7 +152,7 @@ GDT:
     CODEDESCRIPTOR:
         dw 0xFFFF                           ; Limit [15:00]
         dw 0x0000                           ; Base [15:00]
-        db 0x00                             ; Base [23:16] @@ 예제와 다르게 작성함 예제는 0x00
+        db 0x00                             ; Base [23:16] @@ 시작주소를 0x10000으로 세팅하고 싶다면 해당 영역을 0x01로 지정
         db 0x9A                             ; P=1, DPL=0, Code Segment, Execute/Read
         db 0xCF                             ; G=1, D=1, Limit[19:16]
         db 0x00                             ; Base [31:24]
