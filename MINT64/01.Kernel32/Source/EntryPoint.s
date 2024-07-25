@@ -68,7 +68,7 @@ PROTECTEDMODE:
     call PRINTMESSAGE
     add esp, 12                     ; 삽입한 파라미터 제거
     
-    jmp dword 0x08: 0x10200           ; 현재 위치에서 무한 루프 수행
+    jmp dword 0x08: 0x10200         ; C 커널의 Main함수 실행(C커널 엔트리 포인트로 점프)
 
 
 ; 함수 코드 영역
