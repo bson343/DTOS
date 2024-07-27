@@ -65,6 +65,8 @@ void kInitializePageTables( void )
 void kSetPageEntryData( PTENTRY* pstEntry, DWORD dwUpperBaseAddress,
 		DWORD dwLowerBaseAddress, DWORD dwLowerFlags, DWORD dwUpperFlags )
 {
+	// 기준 주소 필드가 비트 12 ~ 비트 40까지이고 하위 4바이트만 봐도 비트 12 ~ 비트31까지인데 주소를 그대로 쓰면 플래그 영역과 겹치는 것 아닌가?
+	// 이해가 가지 않는다. 애초에 기준 주소를 표현하기에 필드에 할당된 비트가 부족한 것같은데 문제가 왜 안되는 걸 까?
 	pstEntry->dwAttributeAndLowerBaseAddress = dwLowerBaseAddress | dwLowerFlags;
 	pstEntry->dwUpperBaseAddressAndEXB = ( dwUpperBaseAddress & 0xFF ) | 
 		dwUpperFlags;
