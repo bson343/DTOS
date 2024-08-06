@@ -48,7 +48,7 @@ START:
 
 [BITS 32]
 PROTECTEDMODE:
-    mov ax, 0x10                    ; 보호 모드 커널용 데이터 세그먼트 디스크립터 AX 레지스터에 저장
+    mov ax, 0x20                    ; 보호 모드 커널용 데이터 세그먼트 디스크립터 AX 레지스터에 저장
                                     ; 세그먼트 셀렉터에 설정 할 오프셋 정보
                                     ; GDT 기본주소로 부터 16Byte 떨어진 위치에 데이터 세그먼트 디스크립터가 존재함
 
@@ -70,7 +70,7 @@ PROTECTEDMODE:
     call PRINTMESSAGE
     add esp, 12                     ; 삽입한 파라미터 제거
     
-    jmp dword 0x08: 0x10200         ; C 커널의 Main함수 실행(C커널 엔트리 포인트로 점프)
+    jmp dword 0x18: 0x10200         ; C 커널의 Main함수 실행(C커널 엔트리 포인트로 점프)
 
 
 ; 함수 코드 영역
