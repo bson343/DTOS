@@ -27,13 +27,15 @@ START:
 ; 예제 코드
     ; 커널 코드 세그먼트를 0x00을 기준으로 하는 것으로 교체하고 EIP의 값을 0x00을 기준으로 재설정
     ; jmp dword(16bit 세트먼트 레지스터) CS 세그먼트 셀렉터 : EIP
-    jmp dword 0x08: ( PROTECTEDMODE - $$ + 0x10000 )
-                                    ; 왜 오프셋 영역에 실행 주소를 보정해야 하는지 모르겠다
+    jmp dword 0x18: ( PROTECTEDMODE - $$ + 0x10000 )
                                     ; 리얼모드처럼 보호모드도 세그먼트:오프셋 모델로 주소를 지정하므로 세그먼트 영역에 0x10000을 지정하면 되는거 아닌가?
+                                    ; 왜 오프셋 영역에 실행 주소를 보정해야 하는지 모르겠다
+                                    ; 현대 OS들은 x86의 세그먼트 기능을 사용안하는 것 같다.
+                                    ; 모든 세그먼트가 0x00에서 시작하고 모든 영역이 범위이다.
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; 한 번 시도해본 코드
-    ;jmp dword 0x08: PROTECTEDMODE
+    ;jmp dword 0x18: PROTECTEDMODE
                                     ; GDT에서 코드 세그먼트 기본주소를 0x00(32bit)에서 0x10000(32bit) 수정 함
                                     ; GDT에서 시작 주소를 설정하였으므로 오프셋은 가독성 좋게 레이블만 사용
                                     ; 시도 결과 잘 실행됨!!
@@ -147,6 +149,24 @@ GDT:
         db 0x00
         db 0x00
         db 0x00
+    
+    ; IA-32e 모드 커널용 코드 세그먼트 디스크립터
+    IA_32eCODEDESCRIPTOR:     
+        dw 0xFFFF       ; Limit [15:0]
+        dw 0x0000       ; Base [15:0]
+        db 0x00         ; Base [23:16]
+        db 0x9A         ; P=1, DPL=0, Code Segment, Execute/Read
+        db 0xAF         ; G=1, D=0, L=1, Limit[19:16]
+        db 0x00         ; Base [31:24]  
+        
+    ; IA-32e 모드 커널용 데이터 세그먼트 디스크립터
+    IA_32eDATADESCRIPTOR:
+        dw 0xFFFF       ; Limit [15:0]
+        dw 0x0000       ; Base [15:0]
+        db 0x00         ; Base [23:16]
+        db 0x92         ; P=1, DPL=0, Data Segment, Read/Write
+        db 0xAF         ; G=1, D=0, L=1, Limit[19:16]
+        db 0x00         ; Base [31:24]
     
     ; 보호 모드 커널용 코드 세그먼트 디스크립터
     CODEDESCRIPTOR:
