@@ -12,7 +12,11 @@ ImageMaker:
 	@echo ============= Build ImageMaker ===============
 	@echo
 	
+	rm -f ../ImageMaker.exe
+
 	make -C 00.ImageMaker
+
+	cp 00.ImageMaker/ImageMaker.exe ../ImageMaker.exe
 
 	@echo
 	@echo =============== Build Complete ===============
