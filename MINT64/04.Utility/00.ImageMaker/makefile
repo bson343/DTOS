@@ -12,4 +12,4 @@ ImageMaker.exe: ImageMaker.c
 	
 # 소스 파일을 제외한 나머지 파일 정리	
 clean:
-	powershell -Command rm -Force ImageMaker.exe
+	rm -f ImageMaker.exe
