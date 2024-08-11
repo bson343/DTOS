@@ -47,7 +47,7 @@ Disk.img: 00.BootLoader/BootLoader.bin 01.Kernel32/Kernel32.bin 02.Kernel64/Kern
 	@echo
 
 # 유틸리티 빌드
-Utility: 04.Utility/00.ImageMaker/ImageMaker.c
+Utility:
 	@echo
 	@echo =========== Utility Build Start ===========
 	@echo
