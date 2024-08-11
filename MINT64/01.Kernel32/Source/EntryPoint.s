@@ -4,7 +4,7 @@
 SECTION .text
 
 START:
-    mov ax, 0x1000                  ; 보호 모드 엔트리 포인트의 시작 주소(0x1000)을 세그먼트 레지스터에 설정
+    mov ax, 0x1000                  ; 보호 모드 엔트리 포인트의 시작 주소 0x1000 (0x1000 << 1 + offset)을 세그먼트 레지스터에 설정
     
     mov ds, ax
     mov es, ax
