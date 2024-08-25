@@ -9,7 +9,7 @@
 #include "Types.h"
 #include "Keyboard.h"
 #include "Descriptor.h"
-#include "AssemblyUtility.h"
+#include "PIC.h"
 
 // 함수 선언
 void kPrintString( int iX, int iY, const char* pcString );
@@ -37,23 +37,32 @@ void Main( void )
     kPrintString( 45, 13, "Pass" );
     
     kPrintString( 0, 14, "IDT Initialize..............................[    ]" );
+    
     kInitializeIDTTables();    
     kLoadIDTR( IDTR_STARTADDRESS );
+
     kPrintString( 45, 14, "Pass" );
 
-    kPrintString( 0, 12, "Keyboard Activate...........................[    ]" );
+    kPrintString( 0, 15, "Keyboard Activate...........................[    ]" );
 
     // 키보드를 활성화
     if (kActivateKeyboard() == TRUE)
     {
-        kPrintString(45, 12, "Pass");
+        kPrintString(45, 15, "Pass");
         kChangeKeyboardLED( FALSE, FALSE, FALSE );
     }
     else
     {
-        kPrintString( 45, 12, "Fail");
+        kPrintString( 45, 15, "Fail");
         while (1);
     }
+
+    kPrintString( 0, 16, "PIC Controller And Interrupt Initialize.....[    ]" );
+    // PIC 컨트롤러 초기화 및 모든 인터럽트 활성화
+    kInitializePIC();
+    kMaskPICInterrupt( 0 );
+    kEnableInterrupt();
+    kPrintString( 45, 16, "Pass" );
 
     while ( 1 )
     {
@@ -65,7 +74,7 @@ void Main( void )
             {
                 if (bFlags & KEY_FLAGS_DOWN)
                 {
-                    kPrintString(i++, 16, vcTemp);
+                    kPrintString(i++, 17, vcTemp);
 
                     // 0이 입력되면 변수를 0으로 나누어 Divide Error 예외(벡터 0번)을
                     // 발생시킴
