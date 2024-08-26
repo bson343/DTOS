@@ -1,18 +1,22 @@
 # file		makefile
 # date		2009/01/02
-# author	kkamagui 
+# author	kkamagui
 # brief		IA-32e 모드 커널을 빌드하기 위한 make 파일
 
 ################################################################################
-# 빌드 환경 및 규칙 설정 
+# 빌드 환경 및 규칙 설정
 ################################################################################
 # 컴파일러 및 링커 정의
+CFLAGS += -Wno-implicit-function-declaration
+
+CROSS_PREFIX=x86_64-linux-gnu
+GCC_PREFIX=x86_64-elf
 NASM64 = nasm -f win64
-GCC64 =x86_64-pc-linux-gcc -c -m64 -ffreestanding
-LD64 = x86_64-pc-linux-ld -melf_x86_64 -T ../elf_x86_64.x -nostdlib -e Main -Ttext 0x200000
+GCC64 =$(GCC_PREFIX)-gcc $(CFLAGS) -c -m64 -ffreestanding
+LD64 = $(CROSS_PREFIX)-ld -melf_x86_64 -T ../elf_x86_64.x -nostdlib -e Main -Ttext 0x200000
 
 # 바이너리 이미지 생성을 위한 OBJCOPY 옵션 정의
-OBJCOPY64 = objcopy -j .text -j .data -j .rodata -j .bss -S -O binary
+OBJCOPY64 = $(CROSS_PREFIX)-objcopy -j .text -j .data -j .rodata -j .bss -S -O binary
 
 # 디렉터리 정의
 OBJECTDIRECTORY = Temp
@@ -42,8 +46,8 @@ elfcuteInternalBuild: dep
 # 커널 이미지를 바이너리 파일로 변환하여 IA-32e 모드 바이너리 생성
 Kernel64.bin: elfcuteInternalBuild
 	$(OBJCOPY64) $(OBJECTDIRECTORY)/Kernel64.elf $@
-		
-# 소스 파일을 제외한 나머지 파일 정리	
+
+# 소스 파일을 제외한 나머지 파일 정리
 clean:
 	rm -f *.bin
 	rm -f $(OBJECTDIRECTORY)/*.*
@@ -80,7 +84,7 @@ InternalDependency:
 Kernel64.elf: $(ENTRYPOINTOBJECTFILE) $(COBJECTFILES) $(ASSEMBLYOBJECTFILES)
 	$(LD64) -o $@ $^
 
-# 현재 디릭토리의 파일 중, dependency 파일이 있으면 make에 포함	
+# 현재 디릭토리의 파일 중, dependency 파일이 있으면 make에 포함
 ifeq (Dependency.dep, $(wildcard Dependency.dep))
 include Dependency.dep
 endif

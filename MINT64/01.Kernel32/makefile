@@ -1,10 +1,14 @@
 # 컴파일러 및 링커 정의
+CFLAGS += -Wno-implicit-function-declaration
+
+CROSS_PREFIX=x86_64-linux-gnu
+GCC_PREFIX=x86_64-elf
 NASM32 = nasm
-GCC32 = x86_64-pc-linux-gcc -c -m32 -ffreestanding
-LD32 = x86_64-pc-linux-ld -melf_i386 -T ../elf_i386.x -nostdlib -e Main -Ttext 0x10200
+GCC32 = $(GCC_PREFIX)-gcc $(CFLAGS) -c -m32 -ffreestanding
+LD32 = $(CROSS_PREFIX)-ld -melf_i386 -T ../elf_i386.x -nostdlib -e Main -Ttext 0x10200
 
 # 바이너리 이미지 생성을 위한 OBJCOPY 옵션 정의
-OBJCOPY32 = objcopy -j .text -j .data -j .rodata -j .bss -S -O binary
+OBJCOPY32 = $(CROSS_PREFIX)-objcopy -j .text -j .data -j .rodata -j .bss -S -O binary
 
 # 디렉터리 정의
 OBJECTDIRECTORY = Temp
@@ -39,7 +43,7 @@ $(OBJECTDIRECTORY)/Kernel32.elf.bin: ExecuteInternalBuild
 Kernel32.bin: $(OBJECTDIRECTORY)/EntryPoint.bin $(OBJECTDIRECTORY)/Kernel32.elf.bin
 	cat $^ > $@
 
-# 소스 파일을 제외한 나머지 파일 정리	
+# 소스 파일을 제외한 나머지 파일 정리
 clean:
 	rm -f *.bin
 	rm -f $(OBJECTDIRECTORY)/*.*
@@ -70,7 +74,7 @@ InternalDependency:
 Kernel32.elf: $(CENTRYPOINTOBJECTFILE) $(COBJECTFILES) $(ASSEMBLYOBJECTFILES)
 	$(LD32) -o $@ $^
 
-# 현재 디릭토리의 파일 중, dependency 파일이 있으면 make에 포함	
+# 현재 디릭토리의 파일 중, dependency 파일이 있으면 make에 포함
 ifeq (Dependency.dep, $(wildcard Dependency.dep))
 include Dependency.dep
 endif

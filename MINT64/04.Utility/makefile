@@ -1,6 +1,6 @@
 # file		makefile
 # date		2008/12/16
-# author	kkamagui 
+# author	kkamagui
 # brief		유틸리티를 생성하기 위한 make 파일
 
 # 기본적으로 빌드를 수행할 목록
@@ -11,17 +11,17 @@ ImageMaker:
 	@echo
 	@echo ============= Build ImageMaker ===============
 	@echo
-	
-	rm -f ../ImageMaker.exe
+
+	rm -f ../ImageMaker.out
 
 	make -C 00.ImageMaker
 
-	cp 00.ImageMaker/ImageMaker.exe ../ImageMaker.exe
+	cp 00.ImageMaker/ImageMaker.out ../ImageMaker.out
 
 	@echo
 	@echo =============== Build Complete ===============
 	@echo
-	
-# 소스 파일을 제외한 나머지 파일 정리	
+
+# 소스 파일을 제외한 나머지 파일 정리
 clean:
 	make -C 00.ImageMaker clean

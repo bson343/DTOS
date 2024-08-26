@@ -17,7 +17,7 @@ Kernel32:
 	@echo
 	@echo ============== Build 32bit Kernel ===============
 	@echo
-	
+
 	make -C 01.Kernel32
 
 	@echo
@@ -28,7 +28,7 @@ Kernel64:
 	@echo
 	@echo ============== Build 64bit Kernel ===============
 	@echo
-	
+
 	make -C 02.Kernel64
 
 	@echo
@@ -39,8 +39,8 @@ Disk.img: 00.BootLoader/BootLoader.bin 01.Kernel32/Kernel32.bin 02.Kernel64/Kern
 	@echo
 	@echo =================== Disk image Build Start =====
 	@echo
-	
-	./ImageMaker.exe $^
+
+	./ImageMaker.out $^
 
 	@echo
 	@echo =================== All Build Complete =========
