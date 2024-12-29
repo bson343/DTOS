@@ -1,3 +1,9 @@
 .vscode/
 
+Disk.img
+
 *.exe
+*.bin
+*.o
+*.dep
+*.elf
