@@ -53,7 +53,8 @@ START:
 PROTECTEDMODE:
     mov ax, 0x20                    ; 보호 모드 커널용 데이터 세그먼트 디스크립터 AX 레지스터에 저장
                                     ; 세그먼트 셀렉터에 설정 할 오프셋 정보
-                                    ; GDT 기본주소로 부터 16Byte 떨어진 위치에 데이터 세그먼트 디스크립터가 존재함
+                                    ; 세그먼트 셀렉터 0x10은 GDT 기본주소로 부터 16Byte(offset 2) 떨어진 위치에 데이터 세그먼트 디스크립터(DATADESCRIPTOR:)를 가르킴(변경됨; 보호모드까지만 구축)
+                                    ; 세그먼트 셀렉터 0x20은 GDT 기본주소로 부터 32Byte(offset 4) 떨어진 위치에 데이터 세그먼트 디스크립터(DATADESCRIPTOR:)를 가르킴(추가됨; IA-32e모드까지 구축)
 
     mov ds, ax
     mov es, ax
