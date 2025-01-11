@@ -79,7 +79,7 @@ PROTECTEDMODE:
 
 ; 함수 코드 영역
 
-; 메시지를 출력하는 함구
+; 메시지를 출력하는 함수
 ; 스택에 x, y, 문자열 주소가
 PRINTMESSAGE:
     push ebp
