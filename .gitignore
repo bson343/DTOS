@@ -1,5 +1,9 @@
 .vscode/
 
+Temp/
+
 *.exe
 *.out
+*.bin
+*.img
 
